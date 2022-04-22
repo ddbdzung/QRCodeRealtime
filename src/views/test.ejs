@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+
+<body>
+  <div style="width: 500px" id="reader"></div>
+  <script>
+    function modelizeDecodedText(decodedText) {
+      let textArr = decodedText.split('~~')
+      const constant = ['fullname', 'email', 'identityNumber', 'className', 'gender']
+      let keyArr = []
+      let valueArr = []
+      for (let i = 0; i < textArr.length; i++) {
+        if (i % 2 === 0) {
+          keyArr.push(textArr[i])
+        } else {
+          valueArr.push(textArr[i])
+        }
+      }
+      let objModel = {}
+      for (let i = 0; i < constant.length; i++) {
+        objModel[keyArr[i]] = valueArr[i]
+      }
+      return objModel
+    }
+    function onScanSuccess(decodedText, decodedResult) {
+      // Handle on success condition with the decoded text or result.
+
+      let decodedData = modelizeDecodedText(decodedText)
+      if (decodedData) {
+        // POST CTV data to server once when scan successfully
+        fetch('http://localhost:3002/saveCTV', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(decodedData)
+        }).then(res => res.json())
+          .catch(err => console.log(err))
+      }
+
+      html5QrcodeScanner.clear();
+    }
+    let config = {
+      fps: 10,
+      qrbox: { width: 100, height: 100 },
+      rememberLastUsedCamera: true,
+      // Only support camera scan type.
+      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+    };
+
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess)
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <form method="POST" action="/createQR">
+        <div class="flex items-center justify-center h-screen bg-gray-100">
+            <div class="bg-white py-6 rounded-md px-10 max-w-lg shadow-md">
+                <h1 class="text-center text-lg font-bold text-gray-500">Biểu mẫu đăng ký CTV</h1>
+                <div class="space-y-4 mt-6">
+                    <div class="w-full">
+                        <input name="fullname" type="text" placeholder="Họ tên" class="px-4 py-2 bg-gray-50" required />
+                    </div>
+                    <div class="w-full">
+                        <input name="email" type="text" placeholder="Địa chỉ email" class="px-4 py-2 bg-gray-50"
+                            required />
+                    </div>
+                    <div class="w-full">
+                        <input name="identityNumber" type="text" placeholder="Mã sinh viên" class="px-4 py-2 bg-gray-50"
+                            required />
+                    </div>
+                    <div class="inline-block relative w-64">
+                        Giới tính
+                        <select  name="gender"
+                            class="my-1 block appearance-none w-3/6 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="male">Nam</option>
+                            <option value="female">Nữ</option>
+                        </select>
+                        Lớp
+                        <select name="className"
+                            class="my-1 block appearance-none w-3/6 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="CNTT01">CNTT01</option>
+                            <option value="CNTT02">CNTT02</option>
+                            <option value="CNTT03">CNTT03</option>
+                            <option value="CNTT04">CNTT04</option>
+                            <option value="CNTT05">CNTT05</option>
+                            <option value="CNTT06">CNTT06</option>
+                            <option value="KTPT01">KTPT01</option>
+                            <option value="KTPT02">KTPT02</option>
+                            <option value="KTPT03">KTPT03</option>
+                            <option value="KTPT04">KTPT04</option>
+                            <option value="KHMT01">KHMT01</option>
+                            <option value="KHMT02">KHMT02</option>
+                            <option value="HTTT01">HTTT01</option>
+                            <option value="HTTT02">HTTT02</option>
+                            <option value="HTTT03">HTTT03</option>
+                            <option value="HTTT04">HTTT04</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full mt-5 bg-indigo-600 text-white py-2 rounded-md font-semibold tracking-tight">Tạo QR</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
