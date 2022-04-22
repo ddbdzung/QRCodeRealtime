@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 
 const path = require('path')
+const routes = require('./routes')
 
 // Configure request object in HTTP method
 app.use(express.json()); // for parsing application/json
@@ -11,9 +12,8 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 // app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'src', 'views'));
 
-app.get('/', (req, res) => {
-  res.send('oke')
-})
+// Init routes
+routes(app)
 
 const port =  3002
 
