@@ -5,16 +5,16 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title><%= title %></title>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 
 <body>
-  <div style="width: 500px" id="reader"></div>
+  <div style="width: 400px" id="reader"></div>
   <script>
     function modelizeDecodedText(decodedText) {
       let textArr = decodedText.split('~~')
-      const constant = ['fullname', 'email', 'identityNumber', 'className', 'gender']
+      const constant = ['fullname', 'email', 'identityNumber', 'className']
       let keyArr = []
       let valueArr = []
       for (let i = 0; i < textArr.length; i++) {
@@ -30,35 +30,49 @@
       }
       return objModel
     }
-    function onScanSuccess(decodedText, decodedResult) {
-      // Handle on success condition with the decoded text or result.
 
-      let decodedData = modelizeDecodedText(decodedText)
-      if (decodedData) {
-        // POST CTV data to server once when scan successfully
-        fetch('http://localhost:3002/saveCTV', {
+    function postData(url, data) {
+      return new Promise((resolve, reject) => {
+        fetch(url, {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(decodedData)
-        }).then(res => res.json())
-          .catch(err => console.log(err))
-      }
+          body: JSON.stringify(data)
+        })
+        .then(res => {
+          console.log(res.status)
+          return resolve(res.json())
+        })
+        .catch(err => {
+          return reject(err)
+        })
+      })
+    }
 
-      html5QrcodeScanner.clear();
+    async function onScanSuccess(decodedText, decodedResult) {
+      // Handle on success condition with the decoded text or result.
+      let decodedData = modelizeDecodedText(decodedText)
+
+      // Stop scan
+      html5QrcodeScanner.clear()
+
+      // POST CTV data to server once when scan successfully
+      let resu = await postData('http://localhost:3002/saveCTV', decodedData)
+      alert(resu.message)
+      location.href = 'http://localhost:3002/test'
     }
     let config = {
       fps: 10,
-      qrbox: { width: 100, height: 100 },
+      qrbox: { width: 200, height: 200 },
       rememberLastUsedCamera: true,
       // Only support camera scan type.
       supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     };
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
-      "reader", { fps: 10, qrbox: 250 });
+      "reader", config);
     html5QrcodeScanner.render(onScanSuccess)
   </script>
 </body>
