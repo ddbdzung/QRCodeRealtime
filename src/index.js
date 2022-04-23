@@ -2,8 +2,11 @@ const express = require('express')
 const app = express()
 
 const path = require('path')
+const morgan = require('morgan')
 const routes = require('./routes')
 const { connectMongoDB } = require('./configs/connectMongoDB')
+
+app.use(morgan('combined'));
 
 // Configure request object in HTTP method
 app.use(express.json()); // for parsing application/json
