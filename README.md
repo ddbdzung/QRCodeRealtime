@@ -70,8 +70,4 @@ Open http://localhost:3002 and take a look around.
       height="40" /> </a>
 </p>
 
-<<<<<<< HEAD
 ### Author: [David Dzung Dang](https://www.facebook.com/dzungdang.IT) :whale2:
-=======
-### Author: [David Dzung Dang](https://https://www.facebook.com/dzungdang.IT) :whale2:
->>>>>>> b929c35b381f2c541ac53f29393bfc3f3ebddd0a
