@@ -1,10 +1,14 @@
 const express = require('express')
 const app = express()
+const server = require('http').createServer(app)
+const io = require('socket.io')(server)
 
 const path = require('path')
 const morgan = require('morgan')
 const routes = require('./routes')
 const { connectMongoDB } = require('./configs/connectMongoDB')
+
+const { ctvService } = require('./services')
 
 app.use(morgan('combined'));
 
@@ -28,8 +32,25 @@ connectMongoDB()
 routes(app)
 // ------------------------------
 
-const port = 3002
+// const port = 3003
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}. Open at http://127.0.0.1:${port}`)
+io.on('connection', socket => {
+    console.log('Client connected...')
+    socket.on('scanned', ctvDataFromClient => {
+        ctvService.createNewCtv(ctvDataFromClient)
+            .then(ctvDataFromServer => {
+                socket.emit('success', '')
+                socket.emit('parseCtvData', ctvDataFromServer)
+                socket.broadcast.emit('parseCtvData', ctvDataFromServer)
+            })
+            .catch(err => {
+                socket.emit('error', '')
+            })
+    })
 })
+
+server.listen(3002)
+
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}. Open at http://127.0.0.1:${port}`)
+// })

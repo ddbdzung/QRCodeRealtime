@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
 </head>
 
 <body class="antialiased font-sans bg-gray-200">
@@ -79,10 +81,11 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="future">
 
               <!-- Loop start -->
                <% for (var i = 0; i < data.length; i++) { %>
+
               <tr>
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div class="flex items-center">
@@ -121,9 +124,45 @@
               <% } %>
               <!-- Loop end -->
 
-
             </tbody>
           </table>
+          <script>
+            var socket = io.connect('http://localhost:3002')
+            socket.on('connect', function(data) {})
+            socket.on('parseCtvData', function(data) {
+              $('#future').prepend(
+`<tr>
+  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    <div class="flex items-center">
+      <div class="ml-3">
+        <p class="text-gray-900 whitespace-no-wrap">
+          ${data['fullname']}
+        </p>
+      </div>
+    </div>
+  </td>
+  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    <p class="text-gray-900 whitespace-no-wrap">
+      ${data['identityNumber']}
+    </p>
+  </td>
+  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    <p class="text-gray-900 whitespace-no-wrap">
+      ${data['className']}
+    </p>
+  </td>
+  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    <span class="relative inline-block px-3 py-1 font-semibold text-${data['colorStatus']}-900 leading-tight">
+      <span aria-hidden class="absolute inset-0 bg-${data['colorStatus']}-200 opacity-50 rounded-full"></span>
+      <span class="relative">
+        ${data['status']}
+      </span>
+    </span>
+  </td>
+</tr>`)
+})
+
+          </script>
           <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
             <!-- <span class="text-xs xs:text-sm text-gray-900">
               Showing 1 to 4 of 50 Entries
