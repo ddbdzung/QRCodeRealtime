@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "listen-tailwind": "tailwindcss build -i src/resources/input.css -o src/public/css/tailwindcss/lib.css --watch"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,13 @@
     "mongoose": "^6.3.1",
     "mongoose-delete": "^0.5.4",
     "morgan": "^1.10.0",
+    "postcss": "^8.4.12",
+    "postcss-cli": "^9.1.0",
     "socket.io": "^4.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "postcss-import": "^14.1.0",
+    "tailwindcss": "^3.0.24"
   }
 }
